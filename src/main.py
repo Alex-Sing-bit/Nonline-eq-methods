@@ -17,7 +17,7 @@ def bisection(a, b, e, func_str):
             b = x0
         elif fx * fb < 0:
             a = x0
-        # проверка на 0 на концах отрезка и в текущей точке (например для х**2 - 1 [0, 2]),
+        # проверка на 0 на концах отрезка и в текущей точке (например для x**2 - 1 [0, 2]),
         # убрать если обработка таких случаев не нужна
         else:
             if fa == 0:
@@ -47,7 +47,7 @@ def chord(a, b, e, func_str):
             b = x1
         elif fx * fb < 0:
             a = x1
-        # проверка на 0 на концах отрезка и в текущей точке (например для х**2 - 1 [0, 2]),
+        # проверка на 0 на концах отрезка и в текущей точке (например для x**2 - 1 [0, 2]),
         # убрать если обработка таких случаев не нужна
         else:
             if fa == 0:
@@ -76,7 +76,7 @@ def newton(a, b, e, func_str):
         fx = function(func_str, x1)
         if fx * fa < 0:
             b = x1
-        # проверка на 0 на концах отрезка и в текущей точке (например для х**2 - 1 [0, 2]),
+        # проверка на 0 на концах отрезка и в текущей точке (например для x**2 - 1 [0, 2]),
         # убрать если обработка таких случаев не нужна заменить на
         # else a = x1
         elif fa != 0:
@@ -95,7 +95,7 @@ def compare_time():
     ch = 0
     ne = 0
 
-    for i in range(0, 1000):
+    for i in range(0, REPEATS):
         start_time = time.perf_counter()
         bisection(a, b, e, func_str)
         bi += time.perf_counter() - start_time
@@ -108,9 +108,9 @@ def compare_time():
         newton(a, b, e, func_str)
         ne += time.perf_counter() - start_time
 
-    print("Метод бисекции: {} cекунд на решение: {}.".format(bi / 1000, bisection(a, b, e, func_str)))
-    print("Метод хорд: {} cекунд на решение: {}.".format(ch / 1000, chord(a, b, e, func_str)))
-    print("Метод Ньютона: {} cекунд на решение: {}.".format(ne / 1000, newton(a, b, e, func_str)))
+    print("Метод бисекции: {} cекунд на решение: {}.".format(bi / REPEATS, bisection(a, b, e, func_str)))
+    print("Метод хорд: {} cекунд на решение: {}.".format(ch / REPEATS, chord(a, b, e, func_str)))
+    print("Метод Ньютона: {} cекунд на решение: {}.".format(ne / REPEATS, newton(a, b, e, func_str)))
 
 
 def compare_memory():
@@ -118,7 +118,7 @@ def compare_memory():
     ch_memory = 0
     ne_memory = 0
 
-    for i in range(0, 1000):
+    for i in range(0, REPEATS):
         tracemalloc.start()
         bisection(a, b, e, func_str)
         _, bi_memory_diff = tracemalloc.get_traced_memory()
@@ -137,11 +137,12 @@ def compare_memory():
         ne_memory += ne_memory_diff
         tracemalloc.stop()
 
-    print("Метод бисекции: {} байт на решение: {}.".format(bi_memory / 1000, bisection(a, b, e, func_str)))
-    print("Метод хорд: {} байт на решение: {}.".format(ch_memory / 1000, chord(a, b, e, func_str)))
-    print("Метод Ньютона: {} байт на решение: {}.".format(ne_memory / 1000, newton(a, b, e, func_str)))
+    print("Метод бисекции: {} байт на решение: {}.".format(bi_memory / REPEATS, bisection(a, b, e, func_str)))
+    print("Метод хорд: {} байт на решение: {}.".format(ch_memory / REPEATS, chord(a, b, e, func_str)))
+    print("Метод Ньютона: {} байт на решение: {}.".format(ne_memory / REPEATS, newton(a, b, e, func_str)))
 
 
+REPEATS = 1000
 func_str = input("Введите функцию (используйте x как переменную): ")
 
 a = float(input("Начало отрезка: "))
